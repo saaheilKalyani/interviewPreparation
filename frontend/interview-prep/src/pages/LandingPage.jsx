@@ -11,7 +11,7 @@ import Signup from './Auth/Signup';
 const LandingPage = () => {
   const navigate = useNavigate();
   const [openAuthModal, setOpenAuthModal] = React.useState(false);
-  const [currentPage, setCurrentPage] = React.useState('login');
+  const [currentPage, setCurrentPage] = React.useState("login");
   const handleCTA = () => {
     console.log("CTA Clicked");
   };
@@ -27,7 +27,7 @@ const LandingPage = () => {
           </div>
           <button className="bg-linear-to-r from-[#FBBF24] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"   
             onClick = {() => 
-              setOpenAuthModal('true') 
+              setOpenAuthModal(true)
             }
           >
             Login / Signup
@@ -124,11 +124,12 @@ const LandingPage = () => {
 
     <Modal
       isOpen={openAuthModal}
-      onclose={() => {
-        setOpenAuthModal('false');
+      onClose={() => {
+        setOpenAuthModal(false);
         setCurrentPage('login');
       }}
       hideHeader
+      
     >
       <div>
         {currentPage === "login" &&  (

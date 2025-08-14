@@ -4,6 +4,10 @@ const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes");
+const sessionRoutes = require("./routes/sessionRoutes");
+const questionRoutes = require("./routes/questionRoutes");
+const { generateInterviewQuestion, generateConceptExplanation } = require("./controllers/aiController");
+const { protect } = require("./middlewares/authMiddleware");
 
 const app = express();
 
@@ -23,11 +27,11 @@ app.use(express.json());
 
 // routes 
 app.use("/api/auth", authRoutes);
-// app.use("/api/sessions", sesstionRoutes);
-// app.use("/api/questions", questionRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/questions", questionRoutes);
 
-// app.use("/api/ai/generate-question", protect, generateInterviewQuestion);
-// app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
+app.use("/api/ai/generate-question", protect, generateInterviewQuestion);
+app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
 
 // serve uploades folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"),{}));

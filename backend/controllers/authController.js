@@ -25,15 +25,17 @@ const registerUser = async (req, res) => {
         // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-
+        // if (profileImageUrl  == "") {
+        //     console.log("profile image not found");
+        // }
         // Create new user
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
-            profileImageUrl,
+            // profileImageUrl,
         });
-
+        console.log("after defineing");
         // return user data and token
         res.status(201).json({
             _id: user._id,

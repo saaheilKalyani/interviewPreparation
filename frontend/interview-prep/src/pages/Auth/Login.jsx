@@ -1,14 +1,20 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import axiosInstance from '../../utils/axiosInstance';
 import Input from '../../Components/Inputs/Input';
 import { validateEmail } from '../../utils/helper';
+import { API_PATHS } from '../../utils/apiPaths';
+import { UserContext } from '../../context/userContext';
 
 
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState(null);
+
+
+  const {updateUser} = React.useContext(UserContext);
+
 
   const navigate = useNavigate();
 
@@ -30,6 +36,19 @@ const Login = ({ setCurrentPage }) => {
 
     // Login Api call
     try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+
+      if (token) {
+        localStorage.setItem('token', token); // Store token in localStorage
+        updateUser(response.data); // Update user context with the response data
+        navigate('/dashboard'); // Redirect to dashboard or home page
+      }
+
     } catch (err) {
       if (err.response && err.response.data.message) {
         setError(err.response.data.message);

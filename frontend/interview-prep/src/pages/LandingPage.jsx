@@ -7,16 +7,25 @@ import { LuSparkles } from 'react-icons/lu';
 import Modal  from '../Components/Modal';
 import Login from './Auth/Login';
 import Signup from './Auth/Signup';
+import { UserContext } from '../context/userContext';
+import ProfileInfoCard from '../Components/Cards/ProfileInfoCard';
+import { useContext } from 'react';
 
 const LandingPage = () => {
+  const {user} = useContext(UserContext);
   const navigate = useNavigate();
   const [openAuthModal, setOpenAuthModal] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState("login");
   const handleCTA = () => {
-    console.log("CTA Clicked");
+    if (!user) {
+      setOpenAuthModal(true);
+    } else {
+      navigate('/dashboard'); // Redirect to dashboard if user is already logged in
+    }
+
   };
   return (
-    <>
+  <>
     <div className="w-full min-h-full bg-[#FFFCEF]">
       <div className="w-[500px] h-[500px bg-amber-200/20 blur-[65px] absolute top-0" />
       <div className="container mx-auto px-4 pt-6 pb-[200px] relative z-10">
@@ -25,13 +34,17 @@ const LandingPage = () => {
           <div className="text-xl text-black font-bold">
             Interview Prep AI 
           </div>
-          <button className="bg-linear-to-r from-[#FBBF24] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"   
-            onClick = {() => 
-              setOpenAuthModal(true)
-            }
-          >
-            Login / Signup
-          </button>
+          { user ? (
+            <ProfileInfoCard />
+          ) : (
+            <button className="bg-linear-to-r from-[#FBBF24] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"   
+              onClick = {() => 
+                setOpenAuthModal(true)
+              }
+            >
+              Login / Signup
+            </button>
+          )} 
         </header>
       
         {/* Hero Section */}
@@ -141,7 +154,7 @@ const LandingPage = () => {
       </div>
     </Modal>
     
-    </>
+  </>
   )
 }
 

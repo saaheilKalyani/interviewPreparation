@@ -4,40 +4,76 @@ const Question = require('../models/Question');
 // @desc Create a new session
 // @route POST /api/sessions/create
 // @access Private
-
 exports.createSession = async (req, res) => {
     try {
+        console.log("🔍 CREATE SESSION CALLED");
+        console.log("🔍 Request body:", req.body);
+        console.log("🔍 User ID:", req.user._id);
+
         const { role, experiance, topicsToFocus, description, questions } = req.body;
         const userId = req.user._id;
 
-        const session = new Session.create({
+        // Step 1: Validate required fields
+        if (!role || !experiance || !topicsToFocus || !description) {
+            return res.status(400).json({ 
+                message: 'Missing required fields: role, experiance, topicsToFocus, description' 
+            });
+        }
+
+        console.log("🔍 Creating session...");
+
+        // Step 2: Create session without questions first
+        const sessionData = {
             user: userId,
             role,
             experiance,
             topicsToFocus,
             description,
-        })
+        };
 
-        const questionDocs = await Promise.all(
-            questions.map(async (q) => {
-                const question = new Question.create({
+        console.log("🔍 Session data:", sessionData);
+
+        const session = await Session.create(sessionData);
+        console.log("🔍 Session created:", session);
+
+        // Step 3: Create questions if provided
+        let questionIds = [];
+        if (questions && Array.isArray(questions) && questions.length > 0) {
+            console.log("🔍 Creating questions...");
+            
+            for (let i = 0; i < questions.length; i++) {
+                const q = questions[i];
+                console.log(`🔍 Creating question ${i + 1}:`, q);
+                
+                const question = await Question.create({
                     session: session._id,
                     question: q.question,
                     answer: q.answer,
                 });
-                return question._id;
-            })
-        );
+                
+                console.log(`🔍 Question ${i + 1} created:`, question._id);
+                questionIds.push(question._id);
+            }
+            
+            // Step 4: Update session with question IDs
+            session.questions = questionIds;
+            await session.save();
+            console.log("🔍 Session updated with questions");
+        }
 
-        session.questions = questionDocs;
-        await session.save();
+        console.log("🔍 Success - sending response");
+        res.status(201).json({ success: true, session });
 
-        res.status(201).json({ success: true, session});
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+        console.error('❌ CREATE SESSION ERROR:', error);
+        console.error('❌ Error stack:', error.stack);
+        res.status(500).json({ 
+            message: 'Server error in createSession', 
+            error: error.message,
+            stack: error.stack
+        });
     }
 };
-
 // @desc Get all sessions for the authenticated user
 // @route GET /api/sessions/my-sessions
 // @access Private
@@ -89,7 +125,7 @@ exports.deleteSessions = async (req, res) => {
         }
 
         // Check if the session belongs to the authenticated user
-        if (session.user.toString() !== req.user._id) {
+        if (session.user.toString() !== req.user._id.toString()) {
             return res.status(401).json({ message: 'Not authorized to delete this session' });
         }
 

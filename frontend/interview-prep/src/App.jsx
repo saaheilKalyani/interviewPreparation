@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
@@ -7,8 +7,16 @@ import Dashboard from './pages/Home/Dashboard';
 import InterviewPrep from './pages/InterviewPrep/components/InterviewPrep';
 import UserProvider from './context/userContext';
 
+
 const App = () => {
-  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isExpired = payload.exp * 1000 < Date.now();
+        console.log('Token expired:', isExpired);
+    }
+    }, []);
   return (
     <UserProvider>
       <div>

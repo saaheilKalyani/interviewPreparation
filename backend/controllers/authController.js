@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 // Generate JWT token
 const generateToken = (userId) => { 
     return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-        expiresIn: '7d',
+        expiresIn: '7d'
     });
 };
 
@@ -54,6 +54,7 @@ const registerUser = async (req, res) => {
 // @access Public
 const loginUser = async (req, res) => {
     try {
+        console.log("in login User");
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
@@ -84,13 +85,15 @@ const loginUser = async (req, res) => {
 // @route GET /api/auth/profile 
 // @access Private (required JWT)
 const getUserProfile = async (req, res) => {
+    console.log("from getUserProfile");
     try {
+        console.log("middleware called");
         const user = await User.findById(req.user._id).select('-password'); // exclude password from response
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
         res.json(user);
-    } catch (error) {
+    } catch (error) { 
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 }

@@ -1,4 +1,4 @@
-const questionAnswerPrompts = ( role, experience, topicsToFocus, description ) => (`
+const questionAnswerPrompts = ( role, experience, topicsToFocus, numberOfQuestions ) => (`
     You are an AI assistant designed to help users prepare for job interviews.
     Task:
     - Role: ${role}
@@ -19,7 +19,7 @@ const questionAnswerPrompts = ( role, experience, topicsToFocus, description ) =
     Important : Do not add any extra text. only return valid JSON.
     `);
 
-    const conceptExplainPrompt = (concept) => (`
+const conceptExplainPrompt = (question) => (`
     You are an AI trained to generate explanations for a given interview question.
 
     Task:

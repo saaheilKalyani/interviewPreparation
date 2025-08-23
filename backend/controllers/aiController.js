@@ -10,10 +10,10 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const generateInterviewQuestion = async (req, res) => {
     try {
         const { role, experiance, topicsToFocus, numberOfQuestions } = req.body;
+        console.log(req.body);
         if (!role || !experiance || !topicsToFocus || !numberOfQuestions) {
             return res.status(400).json({ message: 'Please provide all required fields.' });
         }
-
         const prompt = questionAnswerPrompts(role, experiance, topicsToFocus, numberOfQuestions);
 
         const response = await ai.models.generateContent({
@@ -30,7 +30,7 @@ const generateInterviewQuestion = async (req, res) => {
             .trim(); // remove extra spaces
 
         const data = JSON.parse(cleanedText);
-        res.status(200).json.parse(data);
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: 'Failed to generate quesions', error: error.message });
     }

@@ -51,7 +51,7 @@ exports.togglePinQuestion = async (req, res) => {
             return res.status(404).json({ success:false, message: 'Question not found' });
         }
 
-        question.isPinned = !question.isPinned;
+        question.inPinned = !question.inPinned;
         await question.save();
 
         res.status(200).json({ success: true, question });
@@ -67,12 +67,12 @@ exports.togglePinQuestion = async (req, res) => {
 
 exports.updateQuestionNotes = async (req, res) => {
     try {
-        const {notes} = req.body;
+        const {note} = req.body;
         const question = await Question.findById(req.params.id);
         if (!question) {
             return res.status(404).json({ success: false, message: 'Question not found' });
         }
-        question.notes = notes || "";
+        question.note = note || "";
         await question.save();
         res.status(200).json({ success: true, question });
 

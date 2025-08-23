@@ -15,6 +15,7 @@ axiosInstance.interceptors.request.use(
     (config) => {
         // Add any request modifications here, like adding auth tokens
         const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+        console.log("token :", token);
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -37,7 +38,7 @@ axiosInstance.interceptors.response.use(
             if ( error.response.status === 401) {
                 // Handle unauthorized access, e.g., redirect to login
                 console.error('Unauthorized access - redirecting to login');
-                window.location.href = '/dashboard'; // Adjust the path as needed
+                window.location.href = '/'; // Adjust the path as needed
             } else if (error.response.status === 500) {
                 // Handle server errors
                 console.error('Server error occurred:', error.response.data);

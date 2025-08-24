@@ -75,7 +75,8 @@ For feedback, queries, or contributions, feel free to connect:
 **Author:** Saaheil Kalyani\
 **Email:** saaheil0909@gmail.com\
 **LinkedIn:** https://www.linkedin.com/in/saaheil-kalyani-3a2106264?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app\
-**GitHub:** github.com/saaheilKalyani/)
+
+**GitHub:** [github.com/saaheilKalyani](https://github.com/saaheilKalyani)/
 
 ------------------------------------------------------------------------
 

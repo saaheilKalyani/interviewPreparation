@@ -47,7 +47,7 @@ const CreateSessionForm = () => {
                     role,
                     experiance,
                     topicsToFocus,
-                    numberOfQuestions:10,
+                    numberOfQuestions:"5",
                 }
             );
 
@@ -75,10 +75,10 @@ const CreateSessionForm = () => {
 
     return (
         <div className='w-[90vw] md:w-[35vw] p-7 flex flex-col justify-center'>
-            <h3 className='text-lg font-semibold text-black'>
+            <h3 className='text-lg font-bold bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent'>
                 Start a New Interview Journey
             </h3>
-            <p className='text-xs text-slate-700 mt-[5px] mb-3'>
+            <p className='text-xs text-slate-600 mt-[5px] mb-3'>
                 Fill out a few quick details and unlock your personalized set of interview questions!
             </p>
 
@@ -93,8 +93,8 @@ const CreateSessionForm = () => {
                 <Input 
                     value={formData.experiance}
                     onChange={({target}) => handleChange("experiance", target.value)}
-                    label="Years of experiance"
-                    placeholder="(e.g. 1 year, 3 year, 5+ years)"
+                    label="Years of Experience"
+                    placeholder="(e.g. 1 year, 3 years, 5+ years)"
                     type="number"
                 />
                 
@@ -102,7 +102,7 @@ const CreateSessionForm = () => {
                     value={formData.topicsToFocus}
                     onChange={({target}) => handleChange("topicsToFocus", target.value)}
                     label="Topics To Focus On"
-                    placeholder="(Comma-separated, e.g. react, node js, mongoDB)"
+                    placeholder="(Comma-separated, e.g. React, Node.js, MongoDB)"
                     type="text"
                 />
                 
@@ -118,10 +118,10 @@ const CreateSessionForm = () => {
 
                 <button 
                     type="submit"
-                    className='btn-primary w-full mt-2'
+                    className='w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-sky-500 text-white font-semibold shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 disabled:opacity-50'
                     disabled={isLoading}
                 >
-                {isLoading && <SpinnerLoader />}    Create Session
+                    {isLoading && <SpinnerLoader />} Create Session
                 </button>
             </form>
         </div>

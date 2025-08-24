@@ -6,24 +6,19 @@ import { validateEmail } from '../../utils/helper';
 import { API_PATHS } from '../../utils/apiPaths';
 import { UserContext } from '../../context/userContext';
 
-
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState(null);
 
-
-  const {updateUser} = React.useContext(UserContext);
-
-
+  const { updateUser } = React.useContext(UserContext);
   const navigate = useNavigate();
 
-  // handle login form submit
   const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
-      setError('Please fill in all fields');
+      setError('Please enter a valid email address');
       return;
     }
 
@@ -34,7 +29,6 @@ const Login = ({ setCurrentPage }) => {
 
     setError("");
 
-    // Login Api call
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
         email,
@@ -44,11 +38,10 @@ const Login = ({ setCurrentPage }) => {
       const { token } = response.data;
 
       if (token) {
-        localStorage.setItem('token', token); // Store token in localStorage
-        updateUser(response.data); // Update user context with the response data
-        navigate('/dashboard'); // Redirect to dashboard or home page
+        localStorage.setItem('token', token);
+        updateUser(response.data);
+        navigate('/dashboard');
       }
-
     } catch (err) {
       if (err.response && err.response.data.message) {
         setError(err.response.data.message);
@@ -56,56 +49,60 @@ const Login = ({ setCurrentPage }) => {
         setError('An unexpected error occurred. Please try again later.');
       }
     }
-
-  }
-
+  };
 
   return (
     <div className="w-[90vw] md:w-[33vw] p-7 flex flex-col justify-center">
-      <h3 className="text-lg font-semibold text-black">
+      <h3 className="text-xl font-semibold text-gray-900">
         Welcome Back
       </h3>
-      <p className="text-xs text-state-700 mt-[5px] mb-6">
-        Please Enter your credentials to login
+      <p className="text-sm text-gray-600 mt-2 mb-6">
+        Please enter your credentials to log in
       </p>
 
-      <form onSubmit={handleLogin} >
-        <Input 
+      <form onSubmit={handleLogin} className="flex flex-col gap-4">
+        <Input
           value={email}
-          onChange={({target}) => setEmail(target.value)}
+          onChange={({ target }) => setEmail(target.value)}
           label="Email address"
           placeholder="saaheil@gmail.com"
           type="text"
         />
-        <Input 
+        <Input
           value={password}
-          onChange={({target}) => setPassword(target.value)}
+          onChange={({ target }) => setPassword(target.value)}
           label="Password"
           placeholder="********"
           type="password"
         />
 
-        {error && 
+        {error && (
           <p className="text-red-500 text-xs pb-2.5">
             {error}
           </p>
-        }
+        )}
 
-        <button type='submit' className='btn-primary'>
+        {/* Button with gradient theme (like CreateSessionForm) */}
+        <button
+          type="submit"
+          className="w-full py-2.5 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium hover:opacity-90 transition"
+        >
           Login
         </button>
 
-        <p className="text-[13px] text-slate-800 mt-3">
-          Dont have an account? {""}
-          <button className="font-medium text-primary underline cursor-pointer" 
+        <p className="text-sm text-gray-700 mt-3">
+          Don’t have an account?{" "}
+          <button
+            type="button"
+            className="font-medium text-green-600 hover:underline"
             onClick={() => setCurrentPage('signup')}
-          > Sign Up </button>
+          >
+            Sign Up
+          </button>
         </p>
-
       </form>
-      
     </div>
-  )
-}
+  );
+};
 
 export default Login;

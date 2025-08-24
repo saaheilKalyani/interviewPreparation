@@ -1,161 +1,125 @@
-import React from 'react'
-
-// import HERO_PNG from '../../assets/hero.png';
+import React, { useContext } from 'react'
 import { APP_FEATURES } from '../utils/data';
 import { useNavigate } from 'react-router-dom';
-import { LuSparkles } from 'react-icons/lu';
-import Modal  from '../Components/Modal';
+import { MdAutoAwesome } from 'react-icons/md'; 
+import Modal from '../Components/Modal';
 import Login from './Auth/Login';
 import Signup from './Auth/Signup';
 import { UserContext } from '../context/userContext';
 import ProfileInfoCard from '../Components/Cards/ProfileInfoCard';
-import { useContext } from 'react';
 
 const LandingPage = () => {
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [openAuthModal, setOpenAuthModal] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState("login");
+
   const handleCTA = () => {
     if (!user) {
       setOpenAuthModal(true);
     } else {
-      navigate('/dashboard'); // Redirect to dashboard if user is already logged in
+      navigate('/dashboard');
     }
-
   };
+
   return (
-  <>
-    <div className="w-full min-h-full bg-[#FFFCEF]">
-      <div className="w-[500px] h-[500px bg-amber-200/20 blur-[65px] absolute top-0" />
-      <div className="container mx-auto px-4 pt-6 pb-[200px] relative z-10">
+    <>
+      {/* Background */}
+      <div className="w-full min-h-screen bg-gradient-to-br from-emerald-300 via-teal-400 to-sky-400 flex flex-col">
+        
         {/* Header */}
-        <header className="flex justify-between items-center mb-16" >
-          <div className="text-xl text-black font-bold">
-            Interview Prep AI 
+        <header className="flex justify-between items-center px-8 py-6 bg-white/20 backdrop-blur-md shadow-md rounded-b-xl">
+          <div className="text-2xl font-extrabold text-white drop-shadow-md">
+            Interview Prep AI
           </div>
-          { user ? (
+          {user ? (
             <ProfileInfoCard />
           ) : (
-            <button className="bg-linear-to-r from-[#FBBF24] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"   
-              onClick = {() => 
-                setOpenAuthModal(true)
-              }
+            <button
+              className="bg-gradient-to-r from-emerald-500 to-sky-500 text-sm font-semibold text-white px-6 py-2 rounded-full shadow-lg hover:from-emerald-600 hover:to-sky-600 transition"
+              onClick={() => setOpenAuthModal(true)}
             >
               Login / Signup
             </button>
-          )} 
+          )}
         </header>
-      
-        {/* Hero Section */}
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="w-full md:w-1/2 pr-4 mb-8 md:mb-0">
-            <div className="flex items-center justify-left mb-2">
-              <div className="flex items-center gap-2 text-[13px] text-amber-600 font-semibold bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
-                <LuSparkles />  
-                AI Powered
-              </div>
-            </div>
-            <h1 className="text-5xl text-black font-medium mb-6 leading-tight">
-              Ace Interview with <br />
-              <span className="text-yellow-400 bg-clip-text bg-[radial-gradiant(circle,_#FF9324_0%,_#FCD760_100%)] bg-[length:200%_200%] animate-text-shine font-semibold">
-                AI Powered
-              </span> {""}
-              Learning 
-            </h1>
-          </div> 
-          <div className="w-full md:w-1/2">
-            <p className="text-[17px] text-gray-900 mr-0 md:mr-20 mb-6">
-              Get role specific questions, expand answers when you need them, dive deeper into concepts, and organize everything your way. 
-              From preparation to mastery - your ultimate interview toolkit is here.
-            </p>   
-            <button 
-              className="bg-black text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-yellow-100 hover:text-black border border-yellow-50 hover:border-yellow-300 transition-colors cursor-pointer"
-              onClick={handleCTA}
-            >Get Started</button>
+
+        {/* Hero Section - Centered */}
+        <section className="flex flex-col items-center justify-center text-center px-6 py-20">
+          <div className="flex items-center gap-2 text-white bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-md">
+            <MdAutoAwesome /> AI Powered
           </div>
-        </div>   
-      </div>
-    </div>
-    
-    <div className="w-full min-h-full relative z-10 ">
-      <div>
-        <section className="flex items-center justify-center -mt-36">
-          <img
-            // src={HERO_IMG}
-            alt='Hero image'
-            className="w-[80vw] rounded-lg"
-          />
+
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg leading-tight mb-6">
+            Crack Your Next Interview <br />
+            with <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-white animate-pulse">Confidence</span>
+          </h1>
+
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mb-8 font-medium">
+            Personalized, role-specific preparation powered by AI.  
+            Practice smarter, gain confidence, and shine in every interview.
+          </p>
+
+          <button
+            onClick={handleCTA}
+            className="bg-gradient-to-r from-green-500 to-sky-500 text-white font-semibold px-10 py-4 rounded-full shadow-lg hover:from-green-600 hover:to-sky-600 transition"
+          >
+            Get Started
+          </button>
         </section>
       </div>
 
-      <div className="w-full min-h-full bg-[#FFFCEF] mt-10">
-        <div className="container mx-auto px-4 pt-10 pb-20">
-          <section className="mt-5">
-            <h2 className="text-2xl font-medium text-center mb-12">
-              Features that make you shine
-            </h2>
-            <div className="flex flex-col items-center gap-8">
-              {/* First 3 cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-                {APP_FEATURES.slice(0, 3).map((feature) => (
-                  <div 
-                    key={feature.id} 
-                    className="bg-[#fffef8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border-amber-100"
-                  >
-                    <h3 className="text-base font-semibold mb-3">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600">{feature.description}</p>
-                  </div>
-                ))}
-              </div>  
+      {/* Features Section - Staggered Layout */}
+      <section className="bg-gradient-to-br from-sky-50 via-white to-emerald-50 py-20 px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-emerald-700 mb-14">
+          Features that make you stand out
+        </h2>
 
-              {/* Remaining 2 cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {APP_FEATURES.slice(3).map((feature) => (
-                  <div 
-                    key={feature.id} 
-                    className="bg-[#fffef8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border-amber-100"
-                  >
-                    <h3 className="text-base font-semibold mb-3">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600">{feature.description}</p>
-                  </div>
-                ))}
+        <div className="flex flex-col gap-10 max-w-6xl mx-auto">
+          {APP_FEATURES.map((feature, index) => (
+            <div
+              key={feature.id}
+              className={`flex flex-col md:flex-row items-center gap-8 p-8 rounded-3xl shadow-lg bg-white/90 backdrop-blur-md border border-emerald-100 hover:shadow-xl transition ${
+                index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+              }`}
+            >
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-emerald-700 mb-3">
+                  {/* {feature.title} */}
+                </h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+              <div className="flex-1">
+                <div className="w-full h-40 bg-gradient-to-r from-emerald-200 to-sky-200 rounded-xl shadow-inner flex items-center justify-center text-emerald-900 font-semibold">
+                  {feature.title}
+                </div>
               </div>
             </div>
-          </section>
+          ))}
         </div>
-      </div>
+      </section>
 
-      <div className="text-sm bg-gray-50 text-secondary text-center p-5 mt-5">
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-emerald-500 to-sky-500 text-white text-center p-6 font-medium shadow-inner">
         Made with ❤️ by Saaheil Kalyani
-      </div>
-    </div>
+      </footer>
 
-    <Modal
-      isOpen={openAuthModal}
-      onClose={() => {
-        setOpenAuthModal(false);
-        setCurrentPage('login');
-      }}
-      hideHeader
-      
-    >
-      <div>
-        {currentPage === "login" &&  (
-          <Login setCurrentPage={setCurrentPage} />
-        )}
-        {currentPage === "signup" && ( 
-          <Signup setCurrentPage={setCurrentPage} />
-        )}  
-      </div>
-    </Modal>
-    
-  </>
-  )
-}
+      {/* Modal */}
+      <Modal
+        isOpen={openAuthModal}
+        onClose={() => {
+          setOpenAuthModal(false);
+          setCurrentPage("login");
+        }}
+        hideHeader
+      >
+        <div>
+          {currentPage === "login" && <Login setCurrentPage={setCurrentPage} />}
+          {currentPage === "signup" && <Signup setCurrentPage={setCurrentPage} />}
+        </div>
+      </Modal>
+    </>
+  );
+};
 
-export default LandingPage
+export default LandingPage;
